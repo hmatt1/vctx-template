@@ -1,0 +1,19 @@
+{
+    "name": "vctx-lang Environment",
+    "image": "ghcr.io/hmatt1/vctx-lang:latest",
+    
+    "runArgs": ["--entrypoint", "/bin/sh"],
+    "overrideCommand": true,
+
+    "postCreateCommand": "wget https://github.com/hmatt1/vctx-language-support/releases/latest/download/vctx-language-support.vsix -O /tmp/ext.vsix && code --install-extension /tmp/ext.vsix && echo -e '#!/bin/sh\\npython3.14t -X gil=0 /app/vctx-cli.py \"$@\"' > /usr/local/bin/vctx && chmod +x /usr/local/bin/vctx",
+
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "editor.formatOnSave": true
+            }
+        }
+    },
+    
+    "remoteUser": "root"
+}
