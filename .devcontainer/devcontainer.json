@@ -5,14 +5,12 @@
     "runArgs": ["--entrypoint", "/bin/sh"],
     "overrideCommand": true,
 
-    "postCreateCommand": "cp .devcontainer/vctx /usr/local/bin/vctx && chmod +x /usr/local/bin/vctx",
+    "postCreateCommand": "cp .devcontainer/vctx /usr/local/bin/vctx && chmod +x /usr/local/bin/vctx && code --install-extension .devcontainer/vctx-language-support.vsix",
     "postStartCommand": "/usr/local/bin/vctx lsp &",
 
     "customizations": {
         "vscode": {
-            "extensions": [
-                ".devcontainer/vctx-language-support.vsix"
-            ],
+            "extensions": [],
             "settings": {
                 "editor.formatOnSave": true
             }
