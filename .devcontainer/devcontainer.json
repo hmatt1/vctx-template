@@ -10,7 +10,10 @@
 
     "customizations": {
         "vscode": {
-            "extensions": [],
+            "extensions": [
+                "tamasfe.even-better-toml",
+                "llvm-vs-code-extensions.vscode-mlir"
+            ],
             "settings": {
                 "editor.formatOnSave": true
             }
