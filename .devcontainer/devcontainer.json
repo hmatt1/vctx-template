@@ -7,12 +7,11 @@
 
     "postCreateCommand": "cp .devcontainer/vctx /usr/local/bin/vctx && chmod +x /usr/local/bin/vctx",
     "postStartCommand": "/usr/local/bin/vctx lsp &",
+    "postAttachCommand": "code --install-extension .devcontainer/vctx-language-support.vsix --force",
 
     "customizations": {
         "vscode": {
-            "extensions": [
-                ".devcontainer/vctx-language-support.vsix"
-            ],
+            "extensions": [],
             "settings": {
                 "editor.formatOnSave": true
             }
