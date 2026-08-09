@@ -5,7 +5,7 @@
     "runArgs": ["--entrypoint", "/bin/sh"],
     "overrideCommand": true,
 
-    "postCreateCommand": "sudo cp .devcontainer/vctx /usr/local/bin/vctx && sudo chmod +x /usr/local/bin/vctx",
+    "postCreateCommand": "cp .devcontainer/vctx /usr/local/bin/vctx && chmod +x /usr/local/bin/vctx",
     "postStartCommand": "/usr/local/bin/vctx lsp &",
 
     "customizations": {
