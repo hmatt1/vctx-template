@@ -5,7 +5,7 @@
     "runArgs": ["--entrypoint", "/bin/sh"],
     "overrideCommand": true,
 
-    "postCreateCommand": "wget https://github.com/hmatt1/vctx-language-support/releases/latest/download/vctx-language-support.vsix -O /tmp/ext.vsix && code --install-extension /tmp/ext.vsix && echo -e '#!/bin/sh\\npython3.14t -X gil=0 /app/vctx-cli.py \"$@\"' > /usr/local/bin/vctx && chmod +x /usr/local/bin/vctx",
+    "postCreateCommand": "python3.14t -c \"import urllib.request; urllib.request.urlretrieve('https://github.com/hmatt1/vctx-language-support/releases/latest/download/vctx-language-support.vsix', '/tmp/ext.vsix')\" && code --install-extension /tmp/ext.vsix && echo -e '#!/bin/sh\\npython3.14t -X gil=0 /app/vctx-cli.py \"$@\"' > /usr/local/bin/vctx && chmod +x /usr/local/bin/vctx",
 
     "customizations": {
         "vscode": {
