@@ -6,8 +6,7 @@
     "overrideCommand": true,
 
     "postCreateCommand": "cp .devcontainer/vctx /usr/local/bin/vctx && chmod +x /usr/local/bin/vctx",
-    "postStartCommand": "/usr/local/bin/vctx lsp &",
-    "postAttachCommand": "code --install-extension .devcontainer/vctx-language-support.vsix --force",
+    "postAttachCommand": "code --install-extension .devcontainer/vctx-language-support.vsix --force && /usr/local/bin/vctx lsp &",
 
     "customizations": {
         "vscode": {
