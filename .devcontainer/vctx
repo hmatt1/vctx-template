@@ -1,0 +1,10 @@
+#!/bin/sh
+if [ "$1" = "lsp" ]; then
+    echo "Starting VCTX Language Server (via watcher.py)..."
+    # Navigate to /app so watcher monitors the right directory if needed, 
+    # but wait, watcher monitors ".", if we want it to monitor /app we should cd.
+    # Actually, the user's vctx-cli is in /app.
+    cd /app && python3.14t -X gil=0 /app/watcher.py "$@"
+else
+    python3.14t -X gil=0 /app/vctx-cli.py "$@"
+fi
