@@ -1,0 +1,9 @@
+# vctx generated files
+*.sv
+*.vcd
+
+# Synthesis & PnR outputs
+*.json
+*.fs
+*.bin
+build/
