@@ -1,0 +1,30 @@
+// Tang Nano 9K Generic Constraints File
+// Note: vctx components typically have an implicit `clk` and `reset`
+
+// System Clock (27 MHz)
+IO_LOC "clk" 52;
+IO_PORT "clk" IO_TYPE=LVCMOS33 PULL_MODE=UP;
+
+// User Button (used as reset)
+IO_LOC "reset" 3;
+IO_PORT "reset" IO_TYPE=LVCMOS18;
+
+// 6 On-board LEDs (We map the lower 6 bits of the 8-bit output here)
+IO_LOC "val[5]" 16;
+IO_PORT "val[5]" IO_TYPE=LVCMOS18;
+IO_LOC "val[4]" 15;
+IO_PORT "val[4]" IO_TYPE=LVCMOS18;
+IO_LOC "val[3]" 14;
+IO_PORT "val[3]" IO_TYPE=LVCMOS18;
+IO_LOC "val[2]" 13;
+IO_PORT "val[2]" IO_TYPE=LVCMOS18;
+IO_LOC "val[1]" 11;
+IO_PORT "val[1]" IO_TYPE=LVCMOS18;
+IO_LOC "val[0]" 10;
+IO_PORT "val[0]" IO_TYPE=LVCMOS18;
+
+// Remaining 2 bits mapped to arbitrary header pins
+IO_LOC "val[7]" 25;
+IO_PORT "val[7]" IO_TYPE=LVCMOS33;
+IO_LOC "val[6]" 26;
+IO_PORT "val[6]" IO_TYPE=LVCMOS33;

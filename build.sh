@@ -10,7 +10,7 @@ fi
 SRC_FILE="$1"
 BASENAME=$(basename "$SRC_FILE" .vctx)
 TOP_MODULE="${2:-$BASENAME}"
-CST_FILE="${3:-}"
+CST_FILE="${3:-board.cst}"
 
 # Default to Tang Nano 9K if not specified by environment variables
 DEVICE="${DEVICE:-GW1NR-LV9QN88PC6/I5}"
@@ -30,12 +30,7 @@ yosys -p "read_verilog -sv ${BASENAME}.sv; synth_gowin -top ${TOP_MODULE} -json 
 echo "========================================"
 echo "3. Place and Route with nextpnr"
 echo "========================================"
-if [ -n "$CST_FILE" ] && [ -f "$CST_FILE" ]; then
-    nextpnr-himbaechel --device "$DEVICE" --vopt family="$FAMILY" --vopt cst="$CST_FILE" --json "${BASENAME}.json" --write "${BASENAME}_pnr.json"
-else
-    echo "Warning: No CST constraints file provided. Routing without I/O constraints."
-    nextpnr-himbaechel --device "$DEVICE" --vopt family="$FAMILY" --json "${BASENAME}.json" --write "${BASENAME}_pnr.json"
-fi
+nextpnr-himbaechel --device "$DEVICE" --vopt family="$FAMILY" --vopt cst="$CST_FILE" --json "${BASENAME}.json" --write "${BASENAME}_pnr.json"
 
 echo "========================================"
 echo "4. Generating Bitstream with gowin_pack"
