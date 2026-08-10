@@ -19,8 +19,7 @@ FAMILY="${FAMILY:-GW1N-9C}"
 echo "========================================"
 echo "1. Compiling VCTX to SystemVerilog"
 echo "========================================"
-# Adjust this command if vctx outputs differently (e.g., outputs to stdout or requires a different flag)
-vctx compile "$SRC_FILE"
+vctx sv "$SRC_FILE"
 
 echo "========================================"
 echo "2. Synthesizing with Yosys"
