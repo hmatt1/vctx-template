@@ -1,0 +1,43 @@
+name: Build and Release Bitstream
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/hmatt1/vctx-lang:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup vctx command
+        run: |
+          cp .devcontainer/vctx /usr/local/bin/vctx
+          chmod +x /usr/local/bin/vctx
+
+      - name: Build Bitstream
+        run: ./build.sh counter.vctx Counter board.cst
+
+      - name: Install zip
+        run: |
+          apt-get update && apt-get install -y zip
+
+      - name: Zip Artifacts
+        run: |
+          zip bitstream.zip counter.fs board.cst counter.sv
+          
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: bitstream.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
