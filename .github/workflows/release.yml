@@ -2,6 +2,8 @@ name: Build and Release Bitstream
 
 on:
   push:
+    branches:
+      - "**"
     tags:
       - "v*"
   workflow_dispatch:
@@ -33,6 +35,12 @@ jobs:
       - name: Zip Artifacts
         run: |
           zip bitstream.zip counter.fs board.cst counter.sv
+          
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bitstream
+          path: bitstream.zip
           
       - name: Create Release
         uses: softprops/action-gh-release@v2
