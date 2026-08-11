@@ -26,7 +26,7 @@ jobs:
           chmod +x /usr/local/bin/vctx
 
       - name: Build Bitstream
-        run: ./build.sh counter.vctx counter_Counter board.cst
+        run: ./build.sh
 
       - name: Install zip
         run: |

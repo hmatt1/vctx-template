@@ -1,16 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [ "$#" -lt 1 ]; then
-    echo "Usage: $0 <source_file.vctx> [component] [cst_file]"
-    echo "Example: $0 counter.vctx Counter board.cst"
-    exit 1
-fi
-
-SRC_FILE="$1"
-BASENAME=$(basename "$SRC_FILE" .vctx)
-TOP_MODULE="${2:-$BASENAME}"
-CST_FILE="${3:-board.cst}"
+SRC_FILE="counter.vctx"
+BASENAME="counter"
+TOP_MODULE="counter_Counter"
+CST_FILE="board.cst"
 
 DEVICE="${DEVICE:-GW1NR-LV9QN88PC6/I5}"
 FAMILY="${FAMILY:-GW1N-9C}"
