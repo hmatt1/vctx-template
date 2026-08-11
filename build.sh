@@ -24,7 +24,7 @@ vctx sv "$SRC_FILE"
 echo "========================================"
 echo "2. Synthesizing with Yosys"
 echo "========================================"
-yosys -p "read_verilog -sv ${BASENAME}.sv; synth_gowin -top ${TOP_MODULE} -json ${BASENAME}.json"
+yosys -p "read_verilog -sv ./build/${BASENAME}.sv; synth_gowin -top ${TOP_MODULE} -json ${BASENAME}.json"
 
 echo "========================================"
 echo "3. Place and Route with nextpnr"
