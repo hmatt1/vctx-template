@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SRC_FILE="counter.vctx"
-BASENAME="counter"
-TOP_MODULE="counter_Counter"
+SRC_FILE="blinky.vctx"
+BASENAME="blinky"
+TOP_MODULE="blinky_Blinky"
 CST_FILE="board.cst"
 
 DEVICE="${DEVICE:-GW1NR-LV9QN88PC6/I5}"

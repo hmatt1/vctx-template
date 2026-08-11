@@ -1,0 +1,52 @@
+// ==========================================
+// 1. Counter Component
+// ==========================================
+
+component Counter(out val: u24) {
+    // 24-bit counter is large enough to see a blink on a 27 MHz clock
+    reg count: u24 = 0
+    count <= (count + 1) as u24
+    val := count
+}
+
+// ==========================================
+// 2. Blinky Component (Top Level)
+// ==========================================
+
+component Blinky(out led: u1) {
+    wire count_val: u24
+    
+    // Instantiate the Counter, connecting its output to count_val
+    Counter(count_val)
+    
+    // Continuously assign the MSB of the counter to the LED output
+    // Bit 23 will toggle roughly every 0.31 seconds at 27 MHz
+    led := count_val[23]
+}
+
+// ==========================================
+// 3. Simulations
+// ==========================================
+
+sim TestCounter {
+    wire out_val: u24
+    
+    Counter(out_val)
+    
+    assert(out_val == 0, "Counter should start at 0")
+    
+    cycle(1)
+    assert(out_val == 1, "Counter should increment to 1")
+    
+    cycle(5)
+    assert(out_val == 6, "Counter should be 6 after 5 more cycles")
+}
+
+sim TestBlinky {
+    wire out_led: u1
+    
+    Blinky(out_led)
+    
+    // Before any cycles, the counter is 0, so bit 23 is 0
+    assert(out_led == 0, "LED should start off")
+}
