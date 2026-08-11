@@ -2,7 +2,7 @@
 set -euo pipefail
 
 if [ "$#" -lt 1 ]; then
-    echo "Usage: $0 <source_file.vctx> [top_module] [cst_file]"
+    echo "Usage: $0 <source_file.vctx> [component] [cst_file]"
     echo "Example: $0 counter.vctx Counter board.cst"
     exit 1
 fi
@@ -12,30 +12,48 @@ BASENAME=$(basename "$SRC_FILE" .vctx)
 TOP_MODULE="${2:-$BASENAME}"
 CST_FILE="${3:-board.cst}"
 
-# Default to Tang Nano 9K if not specified by environment variables
 DEVICE="${DEVICE:-GW1NR-LV9QN88PC6/I5}"
 FAMILY="${FAMILY:-GW1N-9C}"
 
-echo "========================================"
+BUILD_DIR="build"
+SV_FILE="${BUILD_DIR}/${BASENAME}.sv"
+JSON_FILE="${BUILD_DIR}/${BASENAME}.json"
+PNR_FILE="${BUILD_DIR}/${BASENAME}_pnr.json"
+BITSTREAM="${BUILD_DIR}/${BASENAME}.fs"
+
+for f in "$SRC_FILE" "$CST_FILE"; do
+    if [ ! -f "$f" ]; then
+        echo "Error: $f not found"
+        exit 1
+    fi
+done
+
 echo "1. Compiling VCTX to SystemVerilog"
-echo "========================================"
 vctx sv "$SRC_FILE"
 
-echo "========================================"
+if [ ! -f "$SV_FILE" ]; then
+    echo "Error: expected $SV_FILE after 'vctx sv'"
+    ls -la "$BUILD_DIR" 2>/dev/null || echo "  ${BUILD_DIR} does not exist"
+    exit 1
+fi
+
+echo "Top module: ${TOP_MODULE}"
+echo "Port list:"
+sed -n "/^[[:space:]]*module[[:space:]]\+${TOP_MODULE}/,/);/p" "$SV_FILE"
+
 echo "2. Synthesizing with Yosys"
-echo "========================================"
-yosys -p "read_verilog -sv ./build/${BASENAME}.sv; synth_gowin -top ${TOP_MODULE} -json ${BASENAME}.json"
+yosys -p "read_verilog -sv ${SV_FILE}; synth_gowin -top ${TOP_MODULE} -json ${JSON_FILE}" \
+      -l "${BUILD_DIR}/synthesis.log"
 
-echo "========================================"
-echo "3. Place and Route with nextpnr"
-echo "========================================"
-nextpnr-himbaechel --device "$DEVICE" --vopt family="$FAMILY" --vopt cst="$CST_FILE" --json "${BASENAME}.json" --write "${BASENAME}_pnr.json"
+echo "3. Place and route with nextpnr"
+nextpnr-himbaechel \
+    --device "$DEVICE" \
+    --vopt family="$FAMILY" \
+    --vopt cst="$CST_FILE" \
+    --json "$JSON_FILE" \
+    --write "$PNR_FILE"
 
-echo "========================================"
-echo "4. Generating Bitstream with gowin_pack"
-echo "========================================"
-gowin_pack -d "$FAMILY" -o "${BASENAME}.fs" "${BASENAME}_pnr.json"
+echo "4. Packing bitstream with gowin_pack"
+gowin_pack -d "$FAMILY" -o "$BITSTREAM" "$PNR_FILE"
 
-echo "========================================"
-echo "Success! Bitstream saved to ${BASENAME}.fs"
-echo "========================================"
+echo "Success! Bitstream saved to ${BITSTREAM}"

@@ -26,15 +26,14 @@ jobs:
           chmod +x /usr/local/bin/vctx
 
       - name: Build Bitstream
-        run: ./build.sh counter.vctx Counter board.cst
+        run: ./build.sh counter.vctx counter_Counter board.cst
 
       - name: Install zip
         run: |
           apt-get update && apt-get install -y zip
 
       - name: Zip Artifacts
-        run: |
-          zip bitstream.zip counter.fs board.cst counter.sv
+        run: zip -j bitstream.zip build/*.fs build/*.sv board.cst
           
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
