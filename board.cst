@@ -6,8 +6,8 @@ IO_LOC "clk" 52;
 IO_PORT "clk" IO_TYPE=LVCMOS33 PULL_MODE=UP;
 
 // User Button (used as reset)
-IO_LOC "reset" 3;
-IO_PORT "reset" IO_TYPE=LVCMOS18;
+IO_LOC "rst" 3;
+IO_PORT "rst" IO_TYPE=LVCMOS18;
 
 // 6 On-board LEDs (We map the lower 6 bits of the 8-bit output here)
 IO_LOC "val[5]" 16;
